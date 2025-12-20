@@ -106,12 +106,6 @@ RUN curl -L https://get.helm.sh/helm-v3.14.4-linux-$TARGETARCH.tar.gz | tar xz &
     mv linux-$TARGETARCH/helm /usr/local/bin/helm && \
     chmod +x /usr/local/bin/helm
 
-# install helm-diff plugin
-RUN helm plugin install https://github.com/databus23/helm-diff --version=3.9.6
-
-# install helm-git plugin
-RUN helm plugin install https://github.com/aslafy-z/helm-git --version 1.3.0
-
 # install helmfile https://github.com/schlich/devcontainer-features/blob/main/src/helmfile/install.sh
 # curl -L - follow redirects
 # chmod +x - make file executable
@@ -152,6 +146,12 @@ RUN chmod +x /start.sh
 # Switch to runner user
 USER runner
 WORKDIR /home/runner
+
+# install helm-diff plugin
+RUN helm plugin install https://github.com/databus23/helm-diff --version=3.9.6
+
+# install helm-git plugin
+RUN helm plugin install https://github.com/aslafy-z/helm-git --version 1.3.0
 
 # Define the entrypoint
 ENTRYPOINT ["/start.sh"]
