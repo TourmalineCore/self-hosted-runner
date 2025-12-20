@@ -64,18 +64,6 @@ RUN install -m 0755 -d /etc/apt/keyrings && \
                    docker-compose-plugin && \
     rm -rf /var/lib/apt/lists/*
 
-# install helmfile https://github.com/schlich/devcontainer-features/blob/main/src/helmfile/install.sh
-# curl -L - follow redirects
-# chmod +x - make file executable
-RUN curl -L https://github.com/helmfile/helmfile/releases/download/v0.164.0/helmfile_0.164.0_linux_$TARGETARCH.tar.gz | tar xz && \
-    chmod +x helmfile && \
-    mv helmfile /usr/local/bin
-
-# install helm-diff plugin
-RUN helm plugin install https://github.com/databus23/helm-diff --version=3.9.6
-
-# install helm-git plugin
-RUN helm plugin install https://github.com/aslafy-z/helm-git --version 1.3.0
 
 # Install GitHub CLI
 RUN type -p curl >/dev/null || apt-get install -y curl && \
@@ -110,6 +98,26 @@ RUN curl -fsSL https://pyenv.run | bash && \
 ENV PATH=$PYENV_ROOT/bin:$PATH
 RUN bash -lc 'pyenv install 3.10.14 && pyenv install 3.11.9 && pyenv install 3.12.5 && pyenv global 3.12.5' && \
     bash -lc 'pip install --upgrade pip pipx virtualenv'
+
+# install helm https://kind.sigs.k8s.io/docs/user/quick-start/#installing-from-release-binaries
+# curl -o - write to file
+# chmod +x - make file executable
+RUN curl -L https://get.helm.sh/helm-v3.14.4-linux-$TARGETARCH.tar.gz | tar xz &&\
+    mv linux-$TARGETARCH/helm /usr/local/bin/helm && \
+    chmod +x /usr/local/bin/helm
+
+# install helm-diff plugin
+RUN helm plugin install https://github.com/databus23/helm-diff --version=3.9.6
+
+# install helm-git plugin
+RUN helm plugin install https://github.com/aslafy-z/helm-git --version 1.3.0
+
+# install helmfile https://github.com/schlich/devcontainer-features/blob/main/src/helmfile/install.sh
+# curl -L - follow redirects
+# chmod +x - make file executable
+RUN curl -L https://github.com/helmfile/helmfile/releases/download/v0.164.0/helmfile_0.164.0_linux_$TARGETARCH.tar.gz | tar xz && \
+    chmod +x helmfile && \
+    mv helmfile /usr/local/bin
 
 # Add a user named runner and adding it to sudoers and Docker group
 RUN useradd -m runner && \
