@@ -45,9 +45,7 @@ RUN apt-get update -y && \
                 xz-utils \
                 zip \
                 zlib1g-dev \
-                zstd \
-                gettext-base \
-                autossh
+                zstd
 
 # Install Docker
 RUN install -m 0755 -d /etc/apt/keyrings && \
@@ -121,6 +119,10 @@ RUN curl -L https://github.com/helmfile/helmfile/releases/download/v0.164.0/helm
 RUN curl -Lo kubectl https://dl.k8s.io/release/v1.30.0/bin/linux/$TARGETARCH/kubectl && \
     chmod +x kubectl && \
     mv kubectl /usr/local/bin
+
+RUN apt-get update -y && \
+    apt-get upgrade -y && \
+    apt-get install -y gettext-base autossh
 
 # Add a user named runner and adding it to sudoers and Docker group
 RUN useradd -m runner && \
