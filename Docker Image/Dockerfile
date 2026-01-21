@@ -45,7 +45,9 @@ RUN apt-get update -y && \
                 xz-utils \
                 zip \
                 zlib1g-dev \
-                zstd
+                zstd \
+                gettext-base \
+                autossh
 
 # Install Docker
 RUN install -m 0755 -d /etc/apt/keyrings && \
@@ -113,6 +115,13 @@ RUN curl -L https://github.com/helmfile/helmfile/releases/download/v0.164.0/helm
     chmod +x helmfile && \
     mv helmfile /usr/local/bin
 
+# install kubectl https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#install-kubectl-binary-with-curl-on-linux
+# curl -Lo - follow redirects and write to file
+# chmod +x - make file executable
+RUN curl -Lo kubectl https://dl.k8s.io/release/v1.30.0/bin/linux/$TARGETARCH/kubectl && \
+    chmod +x kubectl && \
+    mv kubectl /usr/local/bin
+
 # Add a user named runner and adding it to sudoers and Docker group
 RUN useradd -m runner && \
     groupadd docker && \
@@ -152,6 +161,10 @@ RUN helm plugin install https://github.com/databus23/helm-diff --version=3.9.6
 
 # install helm-git plugin
 RUN helm plugin install https://github.com/aslafy-z/helm-git --version 1.3.0
+
+COPY ssh-key  /home/runner/ssh-key
+
+COPY kubeconfig /home/runner/.kube/config
 
 # Define the entrypoint
 ENTRYPOINT ["/start.sh"]
