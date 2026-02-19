@@ -122,7 +122,7 @@ RUN curl -Lo kubectl https://dl.k8s.io/release/v1.30.0/bin/linux/$TARGETARCH/kub
 
 RUN apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install -y gettext-base autossh
+    apt-get install -y gettext-base autossh expect
 
 # Add a user named runner and adding it to sudoers and Docker group
 RUN useradd -m runner && \
