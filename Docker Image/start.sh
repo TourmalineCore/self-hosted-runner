@@ -13,7 +13,7 @@ cd /home/runner/actions-runner || exit
 # sudo service docker start
 
 mkdir -p ~/.ssh/
-ssh-keyscan -H ${CLOUD_IP}  >> ~/.ssh/known_hosts
+ssh-keyscan -H ${INNER_CIRCLE_CLOUD_VM_IP} >> ~/.ssh/known_hosts
 
 eval `ssh-agent -s`
 expect << EOF
