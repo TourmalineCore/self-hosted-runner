@@ -3,6 +3,9 @@ services:
     build:
       context: ./Docker Image
       dockerfile: Dockerfile
+      args:
+        - INNER_CIRCLE_CLOUD_PATH_TO_KUBECONFIG=$INNER_CIRCLE_CLOUD_PATH_TO_KUBECONFIG
+        - INNER_CIRCLE_CLOUD_PATH_TO_SSH=$INNER_CIRCLE_CLOUD_PATH_TO_SSH
     restart: unless-stopped
     env_file: .env
     cap_add:
