@@ -1,8 +1,7 @@
 #!/bin/bash
 
-REPO=$REPO
+REPOSITORY_OWNER=$REPOSITORY_OWNER
 REG_TOKEN=$REG_TOKEN
-NAME=$NAME
 INNER_CIRCLE_CLOUD_VM_IP=$INNER_CIRCLE_CLOUD_VM_IP
 INNER_CIRCLE_CLOUD_VM_USER=$INNER_CIRCLE_CLOUD_USER
 INNER_CIRCLE_CLOUD_CLUSTER_PORT=$INNER_CIRCLE_CLOUD_CLUSTER_PORT
@@ -26,7 +25,7 @@ EOF
 
 autossh -fnNT -L ${INNER_CIRCLE_CLOUD_CLUSTER_PORT}:localhost:${INNER_CIRCLE_CLOUD_CLUSTER_PORT} ubuntu@${INNER_CIRCLE_CLOUD_VM_IP} -i ~/ssh-key
 
-./config.sh --url https://github.com/${REPO} --token ${REG_TOKEN} --name ${NAME}
+./config.sh --url https://github.com/${REPOSITORY_OWNER} --token ${REG_TOKEN} 
 
 cleanup() {
   echo "Removing runner..."
