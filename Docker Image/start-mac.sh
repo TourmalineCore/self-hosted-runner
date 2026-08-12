@@ -1,11 +1,10 @@
 #!/bin/bash
 
-REPO=$REPO
+REPOSITORY_OWNER=$REPOSITORY_OWNER
 REG_TOKEN=$REG_TOKEN
-NAME=$NAME
 
 cd /home/runner/actions-runner || exit
-./config.sh --url https://github.com/${REPO} --token ${REG_TOKEN} --name ${NAME}
+./config.sh --url https://github.com/${REPOSITORY_OWNER} --token ${REG_TOKEN}
 
 cleanup() {
   echo "Removing runner..."

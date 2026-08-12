@@ -4,6 +4,8 @@ ARG RUNNER_VERSION="2.328.0"
 ARG NVM_DIR="/usr/local/share/nvm"
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TARGETARCH
+ARG INNER_CIRCLE_CLOUD_PATH_TO_SSH
+ARG INNER_CIRCLE_CLOUD_PATH_TO_KUBECONFIG
 
 # Install base dependencies
 RUN apt-get update -y && \
@@ -122,7 +124,7 @@ RUN curl -Lo kubectl https://dl.k8s.io/release/v1.30.0/bin/linux/$TARGETARCH/kub
 
 RUN apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install -y gettext-base autossh
+    apt-get install -y gettext-base autossh expect
 
 # Add a user named runner and adding it to sudoers and Docker group
 RUN useradd -m runner && \
@@ -164,9 +166,9 @@ RUN helm plugin install https://github.com/databus23/helm-diff --version=3.9.6
 # install helm-git plugin
 RUN helm plugin install https://github.com/aslafy-z/helm-git --version 1.3.0
 
-COPY ssh-key  /home/runner/ssh-key
+COPY ssh-key $INNER_CIRCLE_CLOUD_PATH_TO_SSH
 
-COPY kubeconfig /home/runner/.kube/config
+COPY kubeconfig $INNER_CIRCLE_CLOUD_PATH_TO_KUBECONFIG
 
 # Define the entrypoint
 ENTRYPOINT ["/start.sh"]

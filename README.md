@@ -9,12 +9,13 @@ git clone https://github.com/TourmalineCore/self-hosted-runner --depth 1
 3. Copy `.inner-circle-cluster-external-kubeconfig` file that was created in [inner-circle-env](https://github.com/TourmalineCore/inner-circle-env) repo folder at the VM to the `Docker Image` folder and rename it to `kubeconfig`
 3. Create a copy of `.env.example`, name it `.env` and write your variables like in the given example
 ```
-REPO=TourmalineCore
+REPOSITORY_OWNER=TourmalineCore
 REG_TOKEN=ATLGSKZGN2EN1SDTH11RUN5GOATX5
-NAME=black-server-ubuntu-24.04-x64-01-runner
-CLOUD_IP=192.54.219.45
-CLOUD_USER=ubuntu
-CLUSTER_PORT=6443
+INNER_CIRCLE_CLOUD_VM_IP=192.54.219.45
+INNER_CIRCLE_CLOUD_VM_USER=ubuntu
+INNER_CIRCLE_CLOUD_CLUSTER_PORT=6443
+INNER_CIRCLE_CLOUD_VM_PASSWORD=strongpassword
+INNER_CIRCLE_CLOUD_PATH_TO_SSH=/home/runner/ssh-key
 ```
 4. Add docker group identifier to .env
 ```bash
