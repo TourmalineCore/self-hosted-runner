@@ -151,7 +151,6 @@ RUN echo 'export NVM_DIR="'${NVM_DIR}'"' >> /etc/profile.d/nvm.sh && \
     echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"' >> /etc/profile.d/nvm.sh && \
     echo 'export PATH="'${NVM_DIR}'/versions/node/$(ls -1 '${NVM_DIR}'/versions/node | tail -n1)/bin:$PATH"' >> /etc/profile.d/nvm.sh
 
-
 # Copy the start script and make it executable
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
@@ -166,9 +165,9 @@ RUN helm plugin install https://github.com/databus23/helm-diff --version=3.9.6
 # install helm-git plugin
 RUN helm plugin install https://github.com/aslafy-z/helm-git --version 1.3.0
 
-COPY ssh-key $INNER_CIRCLE_CLOUD_PATH_TO_SSH
+COPY $INNER_CIRCLE_CLOUD_PATH_TO_SSH /home/runner/ssh-key
 
-COPY kubeconfig $INNER_CIRCLE_CLOUD_PATH_TO_KUBECONFIG
+COPY $INNER_CIRCLE_CLOUD_PATH_TO_KUBECONFIG /home/runner/kubeconfig
 
 # Define the entrypoint
 ENTRYPOINT ["/start.sh"]
