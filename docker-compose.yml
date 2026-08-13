@@ -1,7 +1,7 @@
 services:
   runner:
     build:
-      context: ./Docker Image
+      context: ./DockerImage
       dockerfile: Dockerfile
       args:
         - INNER_CIRCLE_CLOUD_PATH_TO_KUBECONFIG=$INNER_CIRCLE_CLOUD_PATH_TO_KUBECONFIG
@@ -26,3 +26,5 @@ services:
       - "${DOCKER_GID}"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - /var/log/inner-circle:/var/log/inner-circle
+      - /home/runner/actions-runner/_work:/home/runner/actions-runner/_work

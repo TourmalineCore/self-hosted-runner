@@ -21,10 +21,9 @@ INNER_CIRCLE_CLOUD_PATH_TO_SSH=/home/runner/ssh-key
 ```bash
 echo DOCKER_GID=$(stat -c '%g' /var/run/docker.sock) >> .env
 ```
-5. Configure count of runner replicas and resources in `docker-compose.yml`
 
-6. Start runners by executing the following command:
+5. Start runners by executing the following command:
 ```bash
-docker compose up --detach --build
+make start
 ```
 
