@@ -7,7 +7,7 @@ start:
 	&& mkdir -p /home/runner/actions-runner/_work \
 	&& chmod 777 -R /home/runner/actions-runner/_work
 
-	docker build -t self-hosted-runner-runner ./DockerImage -f ./DockerImage/Dockerfile
+	docker compose build
 
 	docker create --name runner-copy self-hosted-runner-runner:latest
 

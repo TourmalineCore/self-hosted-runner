@@ -165,9 +165,9 @@ RUN helm plugin install https://github.com/databus23/helm-diff --version=3.9.6
 # install helm-git plugin
 RUN helm plugin install https://github.com/aslafy-z/helm-git --version 1.3.0
 
-COPY $INNER_CIRCLE_CLOUD_PATH_TO_SSH /home/runner/ssh-key
+COPY $INNER_CIRCLE_CLOUD_PATH_TO_SSH /home/runner/
 
-COPY $INNER_CIRCLE_CLOUD_PATH_TO_KUBECONFIG /home/runner/kubeconfig
+COPY $INNER_CIRCLE_CLOUD_PATH_TO_KUBECONFIG /home/runner/.kube/config
 
 # Define the entrypoint
 ENTRYPOINT ["/start.sh"]
