@@ -13,7 +13,7 @@ services:
       - NET_RAW
     deploy:
       mode: replicated
-      replicas: 8
+      replicas: 1
       resources:
         limits:
           cpus: '0.5'
