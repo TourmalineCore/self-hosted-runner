@@ -23,7 +23,7 @@ expect "Identity added: /home/runner/$INNER_CIRCLE_CLOUD_PATH_TO_SSH *"
 interact
 EOF
 
-autossh -fnNT -L ${INNER_CIRCLE_CLOUD_CLUSTER_PORT}:localhost:${INNER_CIRCLE_CLOUD_CLUSTER_PORT} ubuntu@${INNER_CIRCLE_CLOUD_VM_IP} -i /home/runner/${INNER_CIRCLE_CLOUD_PATH_TO_>
+autossh -fnNT -L ${INNER_CIRCLE_CLOUD_CLUSTER_PORT}:localhost:${INNER_CIRCLE_CLOUD_CLUSTER_PORT} ubuntu@${INNER_CIRCLE_CLOUD_VM_IP} -i /home/runner/${INNER_CIRCLE_CLOUD_PATH_TO_SSH}
 
 ./config.sh --url https://github.com/${REPOSITORY_OWNER} --token ${REG_TOKEN}
 
