@@ -5,9 +5,8 @@
 ```bash
 git clone https://github.com/TourmalineCore/self-hosted-runner --depth 1
 ```
-2. Copy `inner-circle-prod-ssh`(without .pub) file that was created in [inner-circle-cloud](https://github.com/TourmalineCore/inner-circle-cloud) repo folder to the 'DockerImage' folder.
-3. Copy `.inner-circle-cluster-external-kubeconfig` file that was created in [inner-circle-env](https://github.com/TourmalineCore/inner-circle-env) repo folder at the VM to the `Docker Image` folder.
-3. Create a copy of `.env.example`, name it `.env` and write your variables like in the given example
+2. Copy `inner-circle-prod-ssh`(without .pub) file that was created in [inner-circle-cloud](https://github.com/TourmalineCore/inner-circle-cloud) repo folder to the `DockerImage` folder.
+3. Copy `.inner-circle-cluster-external-kubeconfig` file that was created in [inner-circle-env](https://github.com/TourmalineCore/inner-circle-env) repo folder at the VM to the `DockerImage` folder.
 
 ```
 REPOSITORY_OWNER=TourmalineCore

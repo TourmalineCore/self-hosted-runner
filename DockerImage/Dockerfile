@@ -155,6 +155,16 @@ RUN echo 'export NVM_DIR="'${NVM_DIR}'"' >> /etc/profile.d/nvm.sh && \
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
+# Copy hook which changes working directory owner after job
+# It's needed because we are using container feature in GitHub Actions workflows
+# In conjuction with DinD runner the GitHub Actions container is being creating on the host
+# Which causes the files to be created by the root user during workflow run 
+# And user inside of a runner can`t cleanup this files with `Permission Denied` error
+COPY hooks/change-owner-after-job.sh /home/runner/actions-runner/hooks/change-owner-after-job.sh
+
+RUN chmod +x /home/runner/actions-runner/hooks/change-owner-after-job.sh \
+    && chown -R runner:runner /home/runner/actions-runner/hooks
+
 # Switch to runner user
 USER runner
 WORKDIR /home/runner
