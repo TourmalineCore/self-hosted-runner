@@ -1,19 +1,26 @@
 services:
   runner:
     build:
-      context: ./Docker Image
+      context: ./DockerImage
       dockerfile: Dockerfile
       args:
-        - INNER_CIRCLE_CLOUD_PATH_TO_KUBECONFIG=$INNER_CIRCLE_CLOUD_PATH_TO_KUBECONFIG
-        - INNER_CIRCLE_CLOUD_PATH_TO_SSH=$INNER_CIRCLE_CLOUD_PATH_TO_SSH
+        INNER_CIRCLE_CLOUD_PATH_TO_KUBECONFIG: ${INNER_CIRCLE_CLOUD_PATH_TO_KUBECONFIG}
+        INNER_CIRCLE_CLOUD_PATH_TO_SSH: ${INNER_CIRCLE_CLOUD_PATH_TO_SSH}
     restart: unless-stopped
     env_file: .env
+    environment:
+      # This hook is used to change working directory owner
+      # It's needed because we are using container feature in GitHub Actions workflows
+      # In conjuction with DinD runner the GitHub Actions container is being creating on the host
+      # Which causes the files to be created during workflow run from the root user
+      # And user inside of a runner cant cleanup this files with `Permission Denied` error
+      ACTIONS_RUNNER_HOOK_JOB_COMPLETED: /home/runner/actions-runner/hooks/change-owner-after-job.sh
     cap_add:
       - NET_ADMIN
       - NET_RAW
     deploy:
       mode: replicated
-      replicas: 8
+      replicas: 1
       resources:
         limits:
           cpus: '0.5'
@@ -26,3 +33,5 @@ services:
       - "${DOCKER_GID}"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - /var/log/inner-circle:/var/log/inner-circle
+      - /home/runner/actions-runner/_work:/home/runner/actions-runner/_work

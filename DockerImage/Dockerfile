@@ -1,6 +1,6 @@
 FROM ubuntu:24.04
 
-ARG RUNNER_VERSION="2.328.0"
+ARG RUNNER_VERSION="2.336.0"
 ARG NVM_DIR="/usr/local/share/nvm"
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TARGETARCH
@@ -151,10 +151,19 @@ RUN echo 'export NVM_DIR="'${NVM_DIR}'"' >> /etc/profile.d/nvm.sh && \
     echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"' >> /etc/profile.d/nvm.sh && \
     echo 'export PATH="'${NVM_DIR}'/versions/node/$(ls -1 '${NVM_DIR}'/versions/node | tail -n1)/bin:$PATH"' >> /etc/profile.d/nvm.sh
 
-
 # Copy the start script and make it executable
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
+
+# Copy hook which changes working directory owner after job
+# It's needed because we are using container feature in GitHub Actions workflows
+# In conjuction with DinD runner the GitHub Actions container is being creating on the host
+# Which causes the files to be created by the root user during workflow run 
+# And user inside of a runner can`t cleanup this files with `Permission Denied` error
+COPY hooks/change-owner-after-job.sh /home/runner/actions-runner/hooks/change-owner-after-job.sh
+
+RUN chmod +x /home/runner/actions-runner/hooks/change-owner-after-job.sh \
+    && chown -R runner:runner /home/runner/actions-runner/hooks
 
 # Switch to runner user
 USER runner
@@ -166,9 +175,9 @@ RUN helm plugin install https://github.com/databus23/helm-diff --version=3.9.6
 # install helm-git plugin
 RUN helm plugin install https://github.com/aslafy-z/helm-git --version 1.3.0
 
-COPY ssh-key $INNER_CIRCLE_CLOUD_PATH_TO_SSH
+COPY $INNER_CIRCLE_CLOUD_PATH_TO_SSH /home/runner/
 
-COPY kubeconfig $INNER_CIRCLE_CLOUD_PATH_TO_KUBECONFIG
+COPY $INNER_CIRCLE_CLOUD_PATH_TO_KUBECONFIG /home/runner/.kube/config
 
 # Define the entrypoint
 ENTRYPOINT ["/start.sh"]

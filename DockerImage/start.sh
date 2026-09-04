@@ -16,16 +16,16 @@ ssh-keyscan -H ${INNER_CIRCLE_CLOUD_VM_IP} >> ~/.ssh/known_hosts
 
 eval `ssh-agent -s`
 expect << EOF
-spawn ssh-add $INNER_CIRCLE_CLOUD_PATH_TO_SSH
-expect "Enter passphrase for $INNER_CIRCLE_CLOUD_PATH_TO_SSH:"
+spawn ssh-add /home/runner/$INNER_CIRCLE_CLOUD_PATH_TO_SSH
+expect "Enter passphrase for /home/runner/$INNER_CIRCLE_CLOUD_PATH_TO_SSH:"
 send "$INNER_CIRCLE_CLOUD_VM_PASSWORD\n";
-expect "Identity added: $INNER_CIRCLE_CLOUD_PATH_TO_SSH *"
+expect "Identity added: /home/runner/$INNER_CIRCLE_CLOUD_PATH_TO_SSH *"
 interact
 EOF
 
-autossh -fnNT -L ${INNER_CIRCLE_CLOUD_CLUSTER_PORT}:localhost:${INNER_CIRCLE_CLOUD_CLUSTER_PORT} ubuntu@${INNER_CIRCLE_CLOUD_VM_IP} -i ${INNER_CIRCLE_CLOUD_PATH_TO_SSH}
+autossh -fnNT -L ${INNER_CIRCLE_CLOUD_CLUSTER_PORT}:localhost:${INNER_CIRCLE_CLOUD_CLUSTER_PORT} ubuntu@${INNER_CIRCLE_CLOUD_VM_IP} -i /home/runner/${INNER_CIRCLE_CLOUD_PATH_TO_SSH}
 
-./config.sh --url https://github.com/${REPOSITORY_OWNER} --token ${REG_TOKEN} 
+./config.sh --url https://github.com/${REPOSITORY_OWNER} --token ${REG_TOKEN}
 
 cleanup() {
   echo "Removing runner..."
